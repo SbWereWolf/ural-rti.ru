@@ -1,0 +1,13 @@
+###
+GET http://127.0.0.1:8000/api/products?per_page=5
+###
+GET http://127.0.0.1:8000/api/products?category_id=3&per_page=5
+###
+GET http://127.0.0.1:8000/api/products?price_min=10000&price_max=20000&per_page=5
+###
+GET http://127.0.0.1:8000/api/products?in_stock=true&per_page=5
+###
+
+GET http://127.0.0.1:8000/api/products?in_stock=true&per_page=0
+###
+GET GET http://127.0.0.1:8000/api/products?in_stock=true&page=0

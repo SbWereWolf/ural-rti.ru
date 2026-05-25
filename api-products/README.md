@@ -13,11 +13,8 @@ SQLite
 PHP extensions: pdo_sqlite, sqlite3, mbstring, xml, dom, xmlwriter
 ```
 
-Для отчёта покрытия тестами дополнительно нужен один из драйверов покрытия:
-
-```text
-Xdebug или PCOV
-```
+Для отчёта покрытия тестами дополнительно нужен драйверов покрытия
+`Xdebug`
 
 ### 1.2. Установка зависимостей
 
@@ -32,48 +29,13 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-Проверьте настройки SQLite:
-
-```dotenv
-DB_CONNECTION=sqlite
-```
-
-Если `DB_DATABASE` не указан, Laravel будет использовать файл:
-
-```text
-database/database.sqlite
-```
-
-Файл с подготовленным набором данных уже включён в проект. Если нужно создать пустой файл вручную:
-
-```bash
-touch database/database.sqlite
-```
-
 ### 1.4. Подготовка базы данных
-
-Вариант A — использовать уже подготовленную базу:
-
-```bash
-php artisan serve
-```
-
-Вариант B — пересоздать схему Laravel-миграциями и Laravel-seeder:
 
 ```bash
 php artisan migrate:fresh
 php artisan db:seed --class=CatalogSeeder
 php artisan catalog:refresh-product-count
 ```
-
-Вариант C — пересоздать SQLite-базу Python-скриптом без PHP SQLite runtime:
-
-```bash
-python3 scripts/seed_sqlite_catalog.py
-php artisan catalog:refresh-product-count
-```
-
-Python-скрипт создаёт таблицы, индексы, три `VIEW`, категории, товары, остатки и строку в `product_catalog_count`.
 
 ### 1.5. Запуск приложения
 
@@ -91,7 +53,8 @@ curl 'http://127.0.0.1:8000/api/products?per_page=5'
 
 ## 2. Бизнес-описание приложения
 
-Приложение предоставляет API каталога товаров для сценариев витрины или товарного листинга.
+Приложение предоставляет API каталога товаров для сценариев витрины
+или товарного листинга.
 
 Основные возможности:
 
@@ -106,7 +69,8 @@ curl 'http://127.0.0.1:8000/api/products?per_page=5'
 8. Понятные ошибки валидации на русском языке с подсказками по исправлению.
 ```
 
-Endpoint рассчитан на большой каталог: подготовленный набор данных содержит 999 000 товаров, 27 930 категорий и 999 000 записей остатков.
+Endpoint рассчитан на большой каталог: подготовленный набор данных
+содержит 999 000 товаров, 27 930 категорий и 999 000 записей остатков.
 
 ---
 
@@ -120,14 +84,14 @@ GET /api/products
 
 Поддерживаемые query-параметры:
 
-| Параметр | Пример | Назначение |
-|---|---|---|
-| `page` | `1` | номер страницы |
-| `per_page` | `50` | размер страницы, максимум `100` |
-| `category_id` | `3` | фильтр по конкретной категории |
-| `price_min` | `100.00` | минимальная цена |
-| `price_max` | `500.00` | максимальная цена |
-| `in_stock` | `true` | только товары с положительным остатком |
+| Параметр      | Пример   | Назначение                             |
+|---------------|----------|----------------------------------------|
+| `page`        | `1`      | номер страницы                         |
+| `per_page`    | `50`     | размер страницы, максимум `100`        |
+| `category_id` | `3`      | фильтр по конкретной категории         |
+| `price_min`   | `100.00` | минимальная цена                       |
+| `price_max`   | `500.00` | максимальная цена                      |
+| `in_stock`    | `true`   | только товары с положительным остатком |
 
 Примеры:
 
@@ -173,7 +137,7 @@ curl 'http://127.0.0.1:8000/api/products?in_stock=true&per_page=5'
 
 ## 4. Ошибки валидации
 
-Ошибки возвращаются в фиксированном формате на русском языке.
+Ошибки возвращаются в фиксированном формате.
 
 Пример:
 
@@ -227,7 +191,8 @@ quantity — актуальное количество товаров;
 actual_at — дата и время актуализации.
 ```
 
-Если в `product_catalog_count` нет строк, API считает total равным `0` до следующего запуска команды.
+Если в `product_catalog_count` нет строк, API считает total равным 
+`0` до следующего запуска команды.
 
 ---
 
@@ -250,7 +215,9 @@ category_product_catalog_view
 stock_product_catalog_view
 ```
 
-API не использует lazy loading связей Eloquent для категории и остатка. Все данные для ответа приходят из `VIEW`, поэтому количество SQL-запросов не растёт при увеличении `per_page`.
+API не использует lazy loading связей Eloquent для категории и 
+остатка. Все данные для ответа приходят из `VIEW`, поэтому количество 
+SQL-запросов не растёт при увеличении `per_page`.
 
 ---
 
@@ -262,32 +229,6 @@ API не использует lazy loading связей Eloquent для кате
 php artisan db:seed --class=CatalogSeeder
 php artisan catalog:refresh-product-count
 ```
-
-### 7.2. Python seeder
-
-Полный набор данных:
-
-```bash
-python3 scripts/seed_sqlite_catalog.py
-```
-
-Маленький набор данных для быстрой локальной проверки:
-
-```bash
-python3 scripts/seed_sqlite_catalog.py \
-  --root-categories 2 \
-  --second-level-categories 2 \
-  --third-level-categories 2 \
-  --products-per-leaf-category 3
-```
-
-Если схема уже создана и нужно только заполнить данные:
-
-```bash
-python3 scripts/seed_sqlite_catalog.py --keep-schema
-```
-
----
 
 ## 8. Команды для тестирования
 
@@ -324,26 +265,6 @@ XDEBUG_MODE=coverage php artisan test --coverage
 ```bash
 XDEBUG_MODE=coverage php artisan test --coverage --min=100
 ```
-
-Если используется PCOV:
-
-```bash
-php -d pcov.enabled=1 artisan test --coverage --min=100
-```
-
-### 8.4. Статическая проверка синтаксиса PHP-файлов
-
-```bash
-find app tests database routes -name '*.php' -print0 | xargs -0 -n1 php -l
-```
-
-### 8.5. Performance pass и EXPLAIN
-
-```bash
-python3 scripts/catalog_performance_pass.py
-```
-
-Скрипт выводит SQL-запросы, параметры, `EXPLAIN QUERY PLAN` и замечания по использованию индексов.
 
 ---
 

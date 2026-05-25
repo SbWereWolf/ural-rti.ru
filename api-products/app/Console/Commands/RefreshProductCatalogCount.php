@@ -10,7 +10,8 @@ class RefreshProductCatalogCount extends Command
 {
     protected $signature = 'catalog:refresh-product-count';
 
-    protected $description = 'Актуализирует кэшированное количество товаров каталога.';
+    protected $description =
+        'Актуализирует кэшированное количество товаров каталога.';
 
     public function handle(): int
     {
@@ -31,7 +32,9 @@ class RefreshProductCatalogCount extends Command
             ])->save();
         }
 
-        $this->components->info("Количество товаров каталога актуализировано: {$quantity}");
+        $this->components->info(
+            "Количество товаров каталога актуализировано: {$quantity}"
+        );
 
         return self::SUCCESS;
     }

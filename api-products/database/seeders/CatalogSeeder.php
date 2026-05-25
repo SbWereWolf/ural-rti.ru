@@ -12,7 +12,7 @@ class CatalogSeeder extends Seeder
     private const SECOND_LEVEL_CATEGORIES = 30;
     private const THIRD_LEVEL_CATEGORIES = 30;
     private const PRODUCTS_PER_LEAF_CATEGORY = 37;
-    private const INSERT_CHUNK_SIZE = 5_000;
+    private const INSERT_CHUNK_SIZE = 500;
     private const EMPTY_STOCK_PERCENT = 10;
 
     public function run(): void

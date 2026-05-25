@@ -26,7 +26,7 @@ class ProductIndexRequest extends FormRequest
             'per_page' => ['sometimes', 'integer', 'min:1', 'max:'.self::MAX_PER_PAGE],
             'category_id' => ['sometimes', 'integer', 'exists:category,id'],
             'price_min' => ['sometimes', 'numeric', 'min:0'],
-            'price_max' => ['sometimes', 'numeric', 'min:0', 'gte:price_min'],
+            'price_max' => ['sometimes', 'numeric', 'min:0'],
             'in_stock' => ['sometimes', 'boolean'],
         ];
     }
@@ -52,8 +52,6 @@ class ProductIndexRequest extends FormRequest
 
             'price_max.numeric' => 'Параметр price_max должен быть числом.',
             'price_max.min' => 'Параметр price_max должен быть больше или равен 0.',
-            'price_max.gte' => 'Параметр price_max должен быть больше или равен price_min.',
-
             'in_stock.boolean' => 'Параметр in_stock должен быть булевым значением.',
         ];
     }
@@ -77,12 +75,38 @@ class ProductIndexRequest extends FormRequest
         }
     }
 
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator): void {
+            if (! $this->filled('price_min') || ! $this->filled('price_max')) {
+                return;
+            }
+
+            $priceMin = $this->input('price_min');
+            $priceMax = $this->input('price_max');
+
+            if (! \is_numeric($priceMin) || ! \is_numeric($priceMax)) {
+                return;
+            }
+
+            if ((float) $priceMax < (float) $priceMin) {
+                $validator->errors()->add(
+                    'price_max',
+                    'Параметр price_max должен быть больше или равен price_min.',
+                );
+            }
+        });
+    }
+
+    /**
+     * @throws HttpResponseException
+     */
     protected function failedValidation(Validator $validator): void
     {
         $errors = [];
 
         foreach ($validator->errors()->messages() as $field => $messages) {
-            $errors[$field] = array_map(
+            $errors[$field] = \array_map(
                 fn (string $message): array => [
                     'message' => $message,
                     'suggestion' => $this->suggestionFor($field),
@@ -99,7 +123,7 @@ class ProductIndexRequest extends FormRequest
 
     public function page(): int
     {
-        return max(1, (int) $this->input('page', 1));
+        return \max(1, (int) $this->input('page', 1));
     }
 
     public function perPage(): int

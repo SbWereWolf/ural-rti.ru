@@ -1,0 +1,130 @@
+# =========================================================
+# 1C-Bitrix: Site Management / Битрикс Управление сайтом
+# =========================================================
+
+# ---------------------------------------------------------
+# OS / IDE
+# ---------------------------------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ---------------------------------------------------------
+# Logs
+# ---------------------------------------------------------
+*.log
+logs/
+log/
+/bitrix/*.log
+/local/*.log
+
+# ---------------------------------------------------------
+# Environment / local config
+# ---------------------------------------------------------
+.env
+.env.*
+!example.env
+
+# Bitrix DB / local settings with secrets
+/bitrix/.settings.php
+/bitrix/php_interface/dbconn.php
+/local/php_interface/.settings.php
+/local/php_interface/dbconn.php
+
+# ---------------------------------------------------------
+# Bitrix core
+# Обычно ядро не хранят в Git
+# ---------------------------------------------------------
+/bitrix/*
+!/bitrix/.gitkeep
+
+# ---------------------------------------------------------
+# Bitrix cache / generated data
+# ---------------------------------------------------------
+/bitrix/cache/
+/bitrix/managed_cache/
+/bitrix/stack_cache/
+/bitrix/html_pages/
+/bitrix/tmp/
+/bitrix/updates/
+/bitrix/backup/
+/bitrix/backup_site/
+/bitrix/wizards/*/site/services/*/tmp/
+
+# Local cache
+/local/cache/
+/local/managed_cache/
+/local/stack_cache/
+/local/tmp/
+
+# ---------------------------------------------------------
+# Uploads / user files
+# ---------------------------------------------------------
+/upload/*
+!/upload/.gitkeep
+
+# Если нужно хранить служебные файлы доступа:
+!/upload/.access.php
+
+# ---------------------------------------------------------
+# Backups / dumps / exports
+# ---------------------------------------------------------
+*.sql
+*.sql.gz
+*.dump
+*.dump.gz
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+*.rar
+*.7z
+backup/
+backups/
+dump/
+dumps/
+export/
+exports/
+
+# ---------------------------------------------------------
+# Composer / dependencies
+# ---------------------------------------------------------
+/vendor/
+composer.phar
+# composer.lock
+
+# Если composer.lock нужен для фиксированных версий,
+# удалите строку composer.lock выше.
+
+# ---------------------------------------------------------
+# Node / frontend build
+# ---------------------------------------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+/dist/
+/build/
+
+# ---------------------------------------------------------
+# Test / coverage
+# ---------------------------------------------------------
+/coverage/
+.phpunit.result.cache
+
+# ---------------------------------------------------------
+# Temporary files
+# ---------------------------------------------------------
+*.tmp
+*.bak
+*.old
+*.orig
+~$*

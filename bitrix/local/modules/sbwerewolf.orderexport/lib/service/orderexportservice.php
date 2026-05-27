@@ -12,10 +12,13 @@ final class OrderExportService
     private const API_URL = 'https://example.com/api';
     private const API_TOKEN = 'YOUR_SECRET_TOKEN';
 
-    public function send(Order $order, bool $isNew): void
+    public function send(Order $order, bool $isNew): int
     {
-        $payload = $this->buildPayload($order, $isNew);
+        return $this->sendPayload($this->buildPayload($order, $isNew));
+    }
 
+    public function sendPayload(array $payload): int
+    {
         $http = new HttpClient();
 
         $http->setTimeout(2);
@@ -23,10 +26,7 @@ final class OrderExportService
 
         $http->setHeader('Content-Type', 'application/json');
         $http->setHeader('Accept', 'application/json');
-        $http->setHeader(
-            'Authorization',
-            'Bearer ' . self::API_TOKEN,
-        );
+        $http->setHeader('Authorization', 'Bearer ' . self::API_TOKEN);
 
         $response = $http->post(
             self::API_URL,
@@ -41,14 +41,17 @@ final class OrderExportService
                     'API error. HTTP status: %s. Response: %s',
                     $status ?: 'no status',
                     is_string($response) ? $response : 'empty response'
-                )
+                ),
+                $status
             );
         }
+
+        return $status;
     }
 
-    private function buildPayload(Order $order, bool $isNew): array
+    public function buildPayload(Order $order, bool $isNew): array
     {
-        $result =  [
+        return [
             'id' => $order->getId(),
             'account_number' => $order->getField('ACCOUNT_NUMBER'),
             'is_new' => $isNew,
@@ -59,8 +62,6 @@ final class OrderExportService
             'properties' => $this->getProperties($order),
             'basket' => $this->getBasketItems($order),
         ];
-
-        return $result;
     }
 
     private function getProperties(Order $order): array

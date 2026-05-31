@@ -120,6 +120,8 @@
       <excludeFolder url="file://$MODULE_DIR$/api-products/vendor/tijsverkoyen/css-to-inline-styles" />
       <excludeFolder url="file://$MODULE_DIR$/api-products/vendor/vlucas/phpdotenv" />
       <excludeFolder url="file://$MODULE_DIR$/api-products/vendor/voku/portable-ascii" />
+      <excludeFolder url="file://$MODULE_DIR$/api-products/storage/app" />
+      <excludeFolder url="file://$MODULE_DIR$/api-products/storage/framework" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

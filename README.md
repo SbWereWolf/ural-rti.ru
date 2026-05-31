@@ -1,3 +1,9 @@
+PS
+
+- [Laravel](api-products/README.md)
+- [Bitrix](bitrix/local/modules/sbwerewolf.orderexport/include.php)
+- [Архитектура](architecture/README.md)
+
 # Тестовое задание
 
 ## Fullstack-разработчик (Bitrix + Laravel)
